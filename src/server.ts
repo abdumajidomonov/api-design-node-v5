@@ -5,6 +5,7 @@ import helmet from 'helmet'
 import authRoutes from './routes/authRoutes.ts'
 import habitRoutes from './routes/habitRoutes.ts'
 import userRoutes from './routes/userRoutes.ts'
+import { errorHandler } from './middleware/errorHandler.ts'
 import morgan from 'morgan'
 
 const app = express()
@@ -35,6 +36,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes)
 app.use('/api/habits', habitRoutes)
 app.use('/api/users', userRoutes)
+app.use(errorHandler)
 
 export { app }
 
