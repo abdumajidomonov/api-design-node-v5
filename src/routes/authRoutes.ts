@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { register } from '../controllers/authController.ts'
+import { register, login } from '../controllers/authController.ts'
 import { validateBody } from '../middleware/validation.ts'
 import { z } from 'zod'
 
@@ -16,11 +16,13 @@ const registerSchema = z.object({
   lastName: z.string().optional(),
 })
 
-router.post('/register', validateBody(registerSchema), register)
-
-router.post('/login', (req, res) => {
-  res.json({ message: 'User logged in' })
+const loginSchema = z.object({
+  email: z.string().email('Invalid email format'),
+  password: z.string().min(1, 'Password is required'),
 })
+
+router.post('/register', validateBody(registerSchema), register)
+router.post('/login', validateBody(loginSchema), login)
 
 router.post('/logout', (req, res) => {
   res.json({ message: 'User logged out' })
